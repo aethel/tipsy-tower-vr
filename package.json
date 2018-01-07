@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "aframe-physics-system": "^2.1.0",
     "server": "^1.0.12"
   },
   "devDependencies": {},
