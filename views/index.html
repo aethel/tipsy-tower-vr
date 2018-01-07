@@ -1,51 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
-    <script src="scripts.js"></script>
-    <script>
-//       AFRAME.registerComponent('drop-on-click', {
-//         schema: {
-//           to: {
-//             down: '0 -4 0'
-//           }
-//         },
-//         init: function () {
-// console.log(this.data);
-//           let data = this.data;
-//           let el = this.el.querySelector('a-animation');
-//           this.el.addEventListener('click', function(){
-//             console.log(el);
-//             el.setAttribute('to', data.to)
-//           })
-//         }
-//       })
-    </script>
-</head>
-<body>
-    <a-scene>
-      <a-entity camera="userHeight: 1.6" look-controls active="true" >
-        <a-cursor></a-cursor>
-      </a-entity>
-      <a-box position="-3 4 0" drop-on-click="to: 0 -4 0" depth="0.25" width="0.25" height="0.25" color="#4CC3D9">
-            <a-animation attribute="position"
-            dur="15000"
-            direction="alternate"
-            to="3 4 0"
-            repeat="indefinite"></a-animation>
-            <a-animation begin="click" attribute="position"
-            dur="15000"
-            direction="alternate"
-            to="0 -4 0"
-            repeat="indefinite"></a-animation>
-      </a-box>
-      <a-plane position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
-      <a-sky color="#ECECEC"></a-sky>
-    </a-scene>
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+  <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v2.1.0/dist/aframe-physics-system.min.js"></script>
+  <script src="scripts.js"></script>
+  <script>
+    AFRAME.registerComponent('collision-handler', {
+      schema: {
+        dynamicBody: {
+          default: 'none'
+        }
+      },
+      init: function() {
+        console.log(this);
+        const el = this.el;
+        el.addEventListener('click', function(event) {
+          el.setAttribute('dynamic-body', 'shape: box');
+          console.log(this.el);
+        });
+      }
+    })
+  </script>
+</head>
+
+<body>
+  <a-scene>
+    <a-entity camera="userHeight: 1.6" look-controls active="true">
+      <a-cursor></a-cursor>
+    </a-entity>
+    <a-box class="is-current" position="-3 4 0" collision-handler depth="0.25" width="0.25" height="0.25" color="#4CC3D9">
+      <a-animation attribute="position" end="collide" dur="5000" direction="alternate" to="3 4 0" repeat="indefinite"></a-animation>
+    </a-box>
+    <a-plane static-body position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
+    <a-sky color="#ECECEC"></a-sky>
+  </a-scene>
+<script>
+document.querySelector('.is-current').addEventListener('collide', function(evt) {
+
+  console.log(evt, 'has collided');
+  console.log('has collided');
+});
+document.querySelector('a-plane').addEventListener('collide', function(evt) {
+
+  console.log(evt, 'has collided');
+  console.log('has collided');
+});
+</script>
 </body>
+
 </html>
