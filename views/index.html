@@ -10,6 +10,25 @@
   <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v2.1.0/dist/aframe-physics-system.min.js"></script>
   <script src="scripts.js"></script>
   <script>
+    AFRAME.registerPrimitive('a-floater-box', {
+      defaultComponents: {
+        geometry: {
+          primitive: 'box',
+          depth: 0.25,
+          width: 0.25,
+          height: 0.25
+        },
+        position: {
+          x: -3,
+          y: 4,
+          z: 0
+        }
+      },
+      mappings: {
+        color: 'a-floater-box.color'
+      }
+
+    });
     AFRAME.registerComponent('collision-handler', {
       schema: {
         dynamicBody: {
@@ -22,6 +41,7 @@
         el.addEventListener('click', function(event) {
           el.setAttribute('dynamic-body', 'shape: box');
           console.log(this.el);
+          // document.createElement('a-box');
         });
       }
     })
@@ -30,27 +50,33 @@
 
 <body>
   <a-scene>
-    <a-entity camera="userHeight: 1.6" look-controls active="true">
+    <a-assets>
+      <a-mixin id="floater-anim" attribute="position" end="collide" dur="4000" direction="alternate" to="3 4 0" repeat="indefinite"></a-mixin>
+    </a-assets>
+    <a-entity position="0 0 -4" camera="userHeight: 1.6" wasd-controls look-controls active="true">
       <a-cursor></a-cursor>
     </a-entity>
+    <a-floater-box color="ff0000">
+      <a-animation mixin="floater-anim"></a-animation>
+    </a-floater-box>
     <a-box class="is-current" position="-3 4 0" collision-handler depth="0.25" width="0.25" height="0.25" color="#4CC3D9">
       <a-animation attribute="position" end="collide" dur="5000" direction="alternate" to="3 4 0" repeat="indefinite"></a-animation>
     </a-box>
     <a-plane static-body position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
     <a-sky color="#ECECEC"></a-sky>
   </a-scene>
-<script>
-document.querySelector('.is-current').addEventListener('collide', function(evt) {
+  <script>
+    document.querySelector('.is-current').addEventListener('collide', function(evt) {
 
-  console.log(evt, 'has collided');
-  console.log('has collided');
-});
-document.querySelector('a-plane').addEventListener('collide', function(evt) {
+      console.log(evt, 'has collided');
+      console.log('has collided');
+    });
+    document.querySelector('a-plane').addEventListener('collide', function(evt) {
 
-  console.log(evt, 'has collided');
-  console.log('has collided');
-});
-</script>
+      console.log(evt, 'has collided');
+      console.log('has collided');
+    });
+  </script>
 </body>
 
 </html>
