@@ -42,21 +42,33 @@
         }
       },
       init: function() {
-        console.log(this);
+        // console.log(this);
         const el = this.el;
         el.addEventListener('click', function(event) {
+          //make box drop
           el.setAttribute('dynamic-body', 'shape: box');
+          //add new box
           const box = document.createElement('a-floater-box');
           box.classList.add('is-current');
           box.setAttribute('mixin','collision-handler');
+          //add new box's animation
           const boxAnimation = document.createElement('a-animation');
           boxAnimation.setAttribute('mixin','floater-anim');
           box.appendChild(boxAnimation);
           el.classList.remove('is-current');
+          //append box to scene
           document.querySelector('a-scene').appendChild(box);
         });
       }
     })
+    AFRAME.registerComponent('cursor-listener', {
+      init: function() {
+        this.el.addEventListener('click', function(event){
+          console.log(event.detail.intersectedEl, 'event target');
+        })
+      }
+    });
+
   </script>
 </head>
 
@@ -67,7 +79,7 @@
       <a-mixin id="collision-handler" collision-handler></a-mixin>
     </a-assets>
     <a-entity position="0 0 -4" camera="userHeight: 1.6" wasd-controls look-controls active="true">
-      <a-cursor></a-cursor>
+      <a-cursor cursor-listener></a-cursor>
     </a-entity>
     <a-floater-box class="is-current" collision-handler>
       <a-animation mixin="floater-anim"></a-animation>
@@ -80,14 +92,14 @@
   </a-scene>
   <script>
     document.querySelector('.is-current').addEventListener('collide', function(evt) {
-
-      console.log(evt, 'has collided');
-      console.log('has collided');
+      //
+      // console.log(evt, 'has collided');
+      // console.log('has collided');
     });
     document.querySelector('a-plane').addEventListener('collide', function(evt) {
-
-      console.log(evt, 'has collided');
-      console.log('has collided');
+      //
+      // console.log(evt, 'has collided');
+      // console.log('has collided');
     });
   </script>
 </body>
