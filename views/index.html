@@ -45,11 +45,10 @@
         console.log(this);
         const el = this.el;
         el.addEventListener('click', function(event) {
-          debugger;
           el.setAttribute('dynamic-body', 'shape: box');
           const box = document.createElement('a-floater-box');
           box.classList.add('is-current');
-          box.setAttribute('collision-handler');
+          box.setAttribute('mixin','collision-handler');
           const boxAnimation = document.createElement('a-animation');
           boxAnimation.setAttribute('mixin','floater-anim');
           box.appendChild(boxAnimation);
@@ -64,7 +63,8 @@
 <body>
   <a-scene>
     <a-assets>
-      <a-mixin id="floater-anim" attribute="position" end="collide" dur="3000" direction="alternate" to="3 4 0" repeat="indefinite"></a-mixin>
+      <a-mixin id="floater-anim" attribute="position" end="collide" dur="6000" direction="alternate" to="3 4 0" repeat="indefinite"></a-mixin>
+      <a-mixin id="collision-handler" collision-handler></a-mixin>
     </a-assets>
     <a-entity position="0 0 -4" camera="userHeight: 1.6" wasd-controls look-controls active="true">
       <a-cursor></a-cursor>
