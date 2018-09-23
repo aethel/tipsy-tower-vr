@@ -11,15 +11,6 @@
   <script src="https://unpkg.com/aframe-animation-component@^4.1.2/dist/aframe-animation-component.min.js"></script>
   <script src="scripts.js"></script>
   <script>
-    // AFRAME.registerPrimitive('a-floater', {
-    // addChildren: function(){
-    //   this.box = document.createElement('a-floater-box');
-    //   this.boxAnimation = document.createElement('a-animation').setAttribute('mixin','floater-anim');
-    //   this.box.appendChild(.this.boxAnimation);
-    //   this.appendChild(this.box);
-    // }()
-
-    // });
     AFRAME.registerPrimitive('a-floater-box', {
       defaultComponents: {
         geometry: {
@@ -36,74 +27,30 @@
         color: "#4CC3D9"
       }
     });
-    AFRAME.registerComponent('collision-handler', {
-      schema: {
-        event: {
-          type: 'string',
-          default: ''
-        },
-        dynamicBody: {
-          default: 'box'
-        }
-      },
-      mutliple: true,
-      init: function () {
-        const self = this;
-        // this.eventHandler = function() {console.log(self.event, 'self in init');}
-        console.log(this);
-        const el = this.el;
-        
-          // el.addEventListener('click', function (event) {
-          //   //make box drop
-          //   el.setAttribute('dynamic-body', 'shape: box');
-          //   el.removeAttribute('collision-handler');
-          //   el.removeAttribute('mixin');
-          //   el.classList.remove('is-current');
-          //   //add new box
-          //   const box = document.createElement('a-floater-box');
-          //   box.classList.add('is-current');
-          //   box.setAttribute('mixin', 'collision-handler');
-          //   //add new box's animation
-          //   box.setAttribute('animation', animationProps);
-          //   //append box to scene
-          //   document.querySelector('a-scene').appendChild(box);
-          // });
-      }
-      // update: function(oldData) {
-      //   const data = this.data;
-      //   const el = this.el;
-      //   console.log(data, el)
-      //   if(oldData.event && data.event !== oldData.event) {
-      //     console.log(oldData, el)
-      //     el.removeEventListener(oldData.event, this.eventHandler)
-      //   }
-      //   if(data.event) {
-      //     el.addEventListener(data.event, this.eventHandler);
-      //   }
-      // }
-    })
     AFRAME.registerComponent('cursor-listener', {
       init: function () {
-        const animationProps =  `property: position; dur: 6000; dir: alternate; to: 3 4 0; loop: true`;
-        this.el.addEventListener('click', function (event) {
-          const el = event.detail.intersectedEl;
-          console.log(event.detail.intersectedEl, 'event target');
-          if (!el.classList.contains('is-current')) {
-            return false;
-          }
-            el.setAttribute('dynamic-body', 'shape: box');
-            el.removeAttribute('collision-handler');
-            el.removeAttribute('mixin');
-            el.classList.remove('is-current');
-            //add new box
-            const box = document.createElement('a-floater-box');
-            box.classList.add('is-current');
-            box.setAttribute('mixin', 'collision-handler');
-            //add new box's animation
-            box.setAttribute('animation', animationProps);
-            //append box to scene
-            document.querySelector('a-scene').appendChild(box);
-        });
+        console.log(this.data);
+
+
+        this.el.addEventListener('click', this.dropSpawn)
+      },
+      dropSpawn: function (event) {
+        const animationProps = `property: position; dur: 6000; dir: alternate; to: 3 4 0; loop: true`;
+        const el = event ? event.detail.intersectedEl : null;
+        if (!el || !el.classList.contains('is-current')) {
+          return false;
+        }
+        el.setAttribute('dynamic-body', 'shape: box');
+        el.removeAttribute('collision-handler');
+        el.classList.remove('is-current');
+        //add new box
+        const box = document.createElement('a-floater-box');
+        box.classList.add('is-current');
+        box.setAttribute('collision-handler');
+        //add new box's animation
+        box.setAttribute('animation', animationProps);
+        //append box to scene
+        document.querySelector('a-scene').appendChild(box);
       }
     });
 
