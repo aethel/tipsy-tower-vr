@@ -39,12 +39,13 @@
     AFRAME.registerComponent('collision-handler', {
       schema: {
         dynamicBody: {
-          default: 'none'
+          default: 'box'
         }
       },
       init: function() {
         // console.log(this);
         const el = this.el;
+        const animationProps = `property: position; dur: 6000; dir: alternate; to: 3 4 0; loop: true`;
         el.addEventListener('click', function(event) {
           //make box drop
           el.setAttribute('dynamic-body', 'shape: box');
@@ -53,7 +54,8 @@
           box.classList.add('is-current');
           box.setAttribute('mixin','collision-handler');
           //add new box's animation
-          boxAnimation.setAttribute('mixin','floater-anim');
+          box.setAttribute('animation',animationProps);
+          // boxAnimation.setAttribute('mixin','floater-anim');
           // const boxAnimation = document.createElement('a-animation');
           // box.appendChild(boxAnimation);
           el.classList.remove('is-current');
@@ -74,7 +76,7 @@
 </head>
 
 <body>
-  <a-scene>
+  <a-scene physics="restitution: 0.1">
     <a-assets>
       <a-mixin id="floater-anim" property="position" dur="6000" dir="alternate" to="3 4 0" loop="true"></a-mixin>
       <!-- <a-mixin id="floater-anim" property="position" end="collide" dur="6000" dir="alternate" to="3 4 0" loop="true"></a-mixin> -->
