@@ -29,13 +29,13 @@
     });
     AFRAME.registerComponent('cursor-listener', {
       init: function () {
-        console.log(this.data);
-
-
         this.el.addEventListener('click', this.dropSpawn)
+        // this.el.addEventListener('click', this.reload)
       },
-      dropSpawn: function (event) {
-        const animationProps = `property: position; dur: 6000; dir: alternate; to: 3 4 0; loop: true`;
+      dropSpawn: () => {
+        console.log(event.detail.intersectedEl);
+        console.log(event.detail);        
+        const animationProps = `property: position; easing:easeInOutQuint; dur: 7000; dir: alternate; to: 3 4 0; loop: true`;
         const el = event ? event.detail.intersectedEl : null;
         if (!el || !el.classList.contains('is-current')) {
           return false;
@@ -51,7 +51,8 @@
         box.setAttribute('animation', animationProps);
         //append box to scene
         document.querySelector('a-scene').appendChild(box);
-      }
+      },
+      reload: () => location.reload()
     });
 
   </script>
@@ -66,6 +67,7 @@
       <a-camera wasd-controls look-controls active="true">
         <a-cursor cursor-listener></a-cursor>
       </a-camera>
+      <a-text class="reset-btn" text="anchor: align; width: 5; value: Reset; align: center" rotation="-45 0 0" scale="0.5 0.5 0.5" position="0 -0.5 -2" geometry="primitive: plane"></a-text>
     </a-entity>
     <a-floater-box class="is-current" collision-handler animation="property: position; dur: 6000; dir: alternate; to: 3 4 0; loop: true">
     </a-floater-box>
@@ -74,12 +76,10 @@
   </a-scene>
   <script>
     document.querySelector('.is-current').addEventListener('collide', function (evt) {
-      //
       // console.log(evt, 'has collided');
       // console.log('has collided');
     });
     document.querySelector('a-plane').addEventListener('collide', function (evt) {
-      //
       // console.log(evt, 'has collided');
       // console.log('has collided');
     });
